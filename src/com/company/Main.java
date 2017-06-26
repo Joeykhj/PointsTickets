@@ -6,9 +6,11 @@ public class Main {
 
         GenerateSeedData generateSeedData =  new GenerateSeedData();
         Events events =  generateSeedData.generateSeedData();
+
         NearestEventSearch nearestEventSearch = new NearestEventSearch(events);
-        nearestEventSearch.nearestEvents(4,2);
-        generateSeedData.listAllEvents(events);
-        
+        nearestEventSearch.nearestEvents();
+
+        //generateSeedData.listAllEvents(events);
+
     }
 }

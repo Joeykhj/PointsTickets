@@ -16,44 +16,70 @@ public class NearestEventSearch {
         this.events = events;
     }
 
-    public void nearestEvents(int x, int y){
+    public void nearestEvents(){
 
-        Point origin = new Point(x,y);
-        Map<Integer, Point> eventIDMap = events.getEventIDMap();
-        Map<Integer, Integer> eventDistanceMap = new HashMap<>();
-        int[] distances = new int[eventIDMap.size()];
-        int i = 0;
+        Scanner scanner = new Scanner(System.in);
 
-        for (Map.Entry<Integer, Point> entry : eventIDMap.entrySet()){
-            int distance = manhattanDistanceCalculator(origin, entry.getValue());
-            eventDistanceMap.put(entry.getKey(),distance);
-            distances[i] = distance;
-            i++;
-        }
+        System.out.println( " _______________________\n" +
+                            "|                       |\n" +
+                            "|  Welcome to Viagogo!  |\n" +
+                            "|_______________________|\n" +
+                            "\n" +
+                            "To find closest events, search a coordinate from (-10,-10) to (10,10)\n" +
+                            "e.g. (4,2) \n");
 
-        Arrays.sort(distances);
+        try{
 
-        List<Integer> closestDistances =  new ArrayList<>();
+            String coordinate = scanner.nextLine();
+            String[] parts = coordinate.split(",");
 
-        if (distances.length > 4){
-            for (int j = 0; j < 5; j++){
-                closestDistances.add(distances[j]);
+            String xString = parts[0].trim().substring(1).trim();
+            String yString = parts[1].trim().substring(0, parts[1].trim().length() - 1).trim();
+
+            int x = Integer.parseInt(xString);
+            int y = Integer.parseInt(yString);
+
+            Point origin = new Point(x, y);
+            Map<Integer, Point> eventIDMap = events.getEventIDMap();
+            Map<Integer, Integer> eventDistanceMap = new HashMap<>();
+            int[] distances = new int[eventIDMap.size()];
+            int i = 0;
+
+            for (Map.Entry<Integer, Point> entry : eventIDMap.entrySet()){
+                int distance = manhattanDistanceCalculator(origin, entry.getValue());
+                eventDistanceMap.put(entry.getKey(),distance);
+                distances[i] = distance;
+                i++;
             }
-        }else {
-            for (int j:distances){
-                closestDistances.add(j);
+
+            Arrays.sort(distances);
+
+            List<Integer> closestDistances =  new ArrayList<>();
+
+            if (distances.length > 4){
+                for (int j = 0; j < 5; j++){
+                    closestDistances.add(distances[j]);
+                }
+            }else {
+                for (int j:distances){
+                    closestDistances.add(j);
+                }
             }
-        }
 
-        List<Integer> closestEventsIDs = new ArrayList<>();
+            List<Integer> closestEventsIDs = new ArrayList<>();
 
-        for(Map.Entry<Integer, Integer> entry : eventDistanceMap.entrySet()){
-            if(closestDistances.contains(entry.getValue()) && closestEventsIDs.size() < 5){
-                closestEventsIDs.add(entry.getKey());
+            for(Map.Entry<Integer, Integer> entry : eventDistanceMap.entrySet()){
+                if(closestDistances.contains(entry.getValue()) && closestEventsIDs.size() < 5){
+                    closestEventsIDs.add(entry.getKey());
+                }
             }
-        }
 
-        printClosestEvents(closestEventsIDs, eventIDMap, eventDistanceMap, events);
+            printClosestEvents(closestEventsIDs, eventIDMap, eventDistanceMap, events);
+
+        }catch (Exception e){
+
+            System.out.println("Invalid entry, please try again");
+        }
     }
 
     private void printClosestEvents(List<Integer> closestEventsIDs, Map<Integer, Point> eventIDMap, Map<Integer, Integer> eventDistanceMap, Events events){
