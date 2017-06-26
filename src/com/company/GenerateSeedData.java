@@ -4,9 +4,6 @@ import java.awt.*;
 import java.text.DecimalFormat;
 import java.util.*;
 
-/**
- * Created by Joey on 23/06/2017.
- */
 public class GenerateSeedData {
 
     public Events generateSeedData(){

@@ -3,9 +3,6 @@ package com.company;
 import java.awt.*;
 import java.util.*;
 
-/**
- * Created by Joey on 25/06/2017.
- */
 public class Events {
 
     private Map<Point, Boolean> eventExistMap = new HashMap<>();

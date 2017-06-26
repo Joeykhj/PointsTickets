@@ -5,9 +5,6 @@ import java.text.DecimalFormat;
 import java.util.*;
 import java.util.List;
 
-/**
- * Created by Joey on 23/06/2017.
- */
 public class NearestEventSearch {
 
     private Events events =  new Events();
