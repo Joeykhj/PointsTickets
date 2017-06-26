@@ -9,6 +9,7 @@ public class NearestEventSearch {
 
     private Events events =  new Events();
 
+
     public NearestEventSearch(Events events){
         this.events = events;
     }
@@ -16,26 +17,38 @@ public class NearestEventSearch {
     public void nearestEvents(){
 
         Scanner scanner = new Scanner(System.in);
+        printWelcomeMessage();
+        findEvents(scanner);
+    }
 
-        System.out.println( " _______________________\n" +
-                            "|                       |\n" +
-                            "|  Welcome to Viagogo!  |\n" +
-                            "|_______________________|\n" +
-                            "\n" +
-                            "To find closest events, search a coordinate from (-10,-10) to (10,10)\n" +
-                            "e.g. (4,2) \n");
+    public void closestEvents(int x, int y){
 
+        Scanner scanner = new Scanner("(" + x + "," + y + ")");
+        findEvents(scanner);
+
+    }
+
+    private void findEvents(Scanner scanner) {
         try{
 
+            //this section takes the user input and converts it from string to int
             String coordinate = scanner.nextLine();
             String[] parts = coordinate.split(",");
 
+            //allows coordinates to be passed with spaces, e.g. accepts (x, y) or ( x , y )
             String xString = parts[0].trim().substring(1).trim();
             String yString = parts[1].trim().substring(0, parts[1].trim().length() - 1).trim();
 
             int x = Integer.parseInt(xString);
             int y = Integer.parseInt(yString);
 
+            //ensures that the coordinates are within the grid
+            if(x > 10 || x < -10 || y > 10 || y < -10){
+                System.out.println("Invalid entry, please try again");
+                return ;
+            }
+
+            //calculates the distances between points
             Point origin = new Point(x, y);
             Map<Integer, Point> eventIDMap = events.getEventIDMap();
             Map<Integer, Integer> eventDistanceMap = new HashMap<>();
@@ -49,6 +62,7 @@ public class NearestEventSearch {
                 i++;
             }
 
+            //rearrange the distances from closest to furthest in the array
             Arrays.sort(distances);
 
             List<Integer> closestDistances =  new ArrayList<>();
@@ -63,6 +77,7 @@ public class NearestEventSearch {
                 }
             }
 
+            //stores the closest event's IDs
             List<Integer> closestEventsIDs = new ArrayList<>();
 
             for(Map.Entry<Integer, Integer> entry : eventDistanceMap.entrySet()){
@@ -71,12 +86,23 @@ public class NearestEventSearch {
                 }
             }
 
+            //displays a list of closest events
             printClosestEvents(closestEventsIDs, eventIDMap, eventDistanceMap, events);
 
-        }catch (Exception e){
+        }catch (Exception e){   //this catch ensures that the input is in the format of (x,y)
 
             System.out.println("Invalid entry, please try again");
         }
+    }
+
+    private void printWelcomeMessage() {
+        System.out.println( " _______________________\n" +
+                            "|                       |\n" +
+                            "|  Welcome to Viagogo!  |\n" +
+                            "|_______________________|\n" +
+                            "\n" +
+                            "To find closest events, search a coordinate from (-10,-10) to (10,10)\n" +
+                            "e.g. (4,2) \n");
     }
 
     private void printClosestEvents(List<Integer> closestEventsIDs, Map<Integer, Point> eventIDMap, Map<Integer, Integer> eventDistanceMap, Events events){
