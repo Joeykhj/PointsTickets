@@ -19,6 +19,8 @@ public class GenerateSeedData {
         Map<Integer, Integer> numberOfTickets = events.getNumberOfTickets();
         Map<Double, Integer> numberOfTicketsPerPrice = events.getNumberOfTicketsPerPrice();
 
+        System.out.println("List of all events: \n");
+
         for (int i = 1; i < eventIDMap.size(); i++) {
 
             DecimalFormat df = new DecimalFormat("0.00");
